@@ -1,13 +1,12 @@
 # main_claude.py
 
 import anthropic
-import os
 
-# Initialize Claude client with environment variable
-client = anthropic.Anthropic(api_key=os.getenv("CLAUDE_API_KEY"))
+def rephrase_full_transcript(transcript, api_key, tone="neutral", style="default", storytelling=False, length_multiplier=1.0):
+    # Initialize client with explicit key
+    client = anthropic.Anthropic(api_key=api_key)
 
-def rephrase_full_transcript(transcript, tone="neutral", style="default", storytelling=False, length_multiplier=1.0):
-    # Build instructions
+    # Instruction generation
     instructions = f"Rephrase the following transcript in a {tone} tone using {style} style."
     if storytelling:
         instructions += " Maintain the storytelling structure."
@@ -15,9 +14,9 @@ def rephrase_full_transcript(transcript, tone="neutral", style="default", storyt
 
     full_prompt = f"{instructions}\n\nTranscript:\n{transcript}"
 
-    # Claude-3 API expects messages as a list of dicts with 'type: text'
+    # Call Claude API with structured message
     response = client.messages.create(
-        model="claude-3-sonnet-20240229",  # You can also try "claude-3-haiku-20240307"
+        model="claude-3-sonnet-20240229",
         max_tokens=4000,
         temperature=0.7,
         messages=[
@@ -33,5 +32,4 @@ def rephrase_full_transcript(transcript, tone="neutral", style="default", storyt
         ]
     )
 
-    # Return the response text
     return response.content[0].text.strip()
