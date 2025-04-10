@@ -1,2 +1,2 @@
 streamlit
-anthropic==0.3.13
+anthropic>=0.3.11
