@@ -39,12 +39,14 @@ if claude_key:
             with st.spinner("Rephrasing the full transcript with Claude..."):
                 try:
                     final_output = rephrase_full_transcript(
-                        transcript=input_text,
-                        tone=tone,
-                        style=style,
-                        storytelling=preserve_story,
-                        length_multiplier=length_multiplier
-                    )
+    transcript=input_text,
+    api_key=claude_key,
+    tone=tone,
+    style=style,
+    storytelling=preserve_story,
+    length_multiplier=length_multiplier
+)
+
                     st.success("✅ Rephrasing complete!")
                     st.subheader("📝 Rephrased Transcript")
                     st.text_area("Final Output", value=final_output, height=500)
