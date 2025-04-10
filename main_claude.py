@@ -2,11 +2,12 @@
 
 import anthropic
 
-def rephrase_full_transcript(transcript, api_key, tone="neutral", style="default", storytelling=False, length_multiplier=1.0):
-    # Initialize client with explicit key
+def rephrase_full_transcript(transcript, api_key, model="claude-3-sonnet-20240229",
+                             tone="neutral", style="default", storytelling=False, length_multiplier=1.0):
+    # Init client with explicit key
     client = anthropic.Anthropic(api_key=api_key)
 
-    # Instruction generation
+    # Build prompt instructions
     instructions = f"Rephrase the following transcript in a {tone} tone using {style} style."
     if storytelling:
         instructions += " Maintain the storytelling structure."
@@ -14,9 +15,9 @@ def rephrase_full_transcript(transcript, api_key, tone="neutral", style="default
 
     full_prompt = f"{instructions}\n\nTranscript:\n{transcript}"
 
-    # Call Claude API with structured message
+    # Make Claude API call
     response = client.messages.create(
-        model="claude-3-sonnet-20240229",
+        model=model,
         max_tokens=4000,
         temperature=0.7,
         messages=[
